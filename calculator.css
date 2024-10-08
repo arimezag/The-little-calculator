@@ -1,0 +1,176 @@
+/* General styling for the body */
+body {
+    font-family: Verdana, sans-serif;
+    background-color: white;
+    margin: 0;
+    padding: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container for the calculator */
+.calculator-container {
+    background-color: #d3d3d3;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 800px;
+    height: 800px;
+    text-align: center;
+}
+
+/* Heading for the calculator */
+h1 {
+    font-size: 24px;
+    color: #333;
+    font-family: Verdana, sans-serif;
+}
+
+/* Style for the information title */
+.info-title {
+    font-size: 20px;
+    color: gray;
+    font-family: Verdana, sans-serif;
+    margin-bottom: 10px;
+}
+
+/* Style for the input field */
+input[type="text"] {
+    font-family: Verdana, sans-serif;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: right;
+    box-sizing: border-box;
+}
+
+/* Styling for button groups */
+.button-group, .csv-button-group {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+/* Layout for operations container */
+.operations-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/* Unary Operations */
+.unary-operations, .binary-operations {
+    flex: 1;
+    margin-right: 10px;
+}
+
+/* Style for the buttons */
+button {
+    background-color: navy;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    transition: background-color 0.3s ease;
+}
+
+/* Specific class for equal button */
+button.equal {
+    background-color: lightblue;
+    border-radius: 50%;
+}
+
+button.rectangular {
+    border-radius: 20px;
+    width: 120px;
+    height: 60px;
+}
+
+
+/* Hover effect for buttons */
+button:hover {
+    background-color: #5a5a5a;
+}
+
+/* Styling the error message */
+#error {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Section headings */
+h3 {
+    font-family: Verdana, sans-serif;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+}
+
+/* Styling for the power input field */
+.small-input {
+    width: 60px;
+    height: 30px;
+    padding: 5px;
+    margin-right: 5px;
+}
+
+#removeValueField {
+    width: 230px;
+    height: 30px;
+    padding: 5px;
+    margin-right: 5px;
+}
+
+
+
+
+/* Responsiveness */
+@media screen and (max-width: 600px) {
+    .calculator-container {
+        width: 100%;
+        margin: 0 10px;
+    }
+
+    button {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+/* Highlight active button */
+button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+/* Loading animation */
+@keyframes loading {
+    0% { background-color: navy; }
+    50% { background-color: #5a5a5a; }
+    100% { background-color: navy; }
+}
+
+button.loading {
+    animation: loading 1s infinite;
+}
+
+button:focus {
+    outline: 2px solid navy;
+    outline-offset: 2px;
+}
