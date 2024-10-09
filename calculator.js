@@ -56,9 +56,9 @@ function fillInfo(result, operation) {
         case 'average':
             infoElement.innerHTML += "<br><em>Operation:</em> CSV Average. The average of the values is " + result + ".";
             break;
-        default:
+        /*default:
             infoElement.innerHTML += "<br><em>Operation:</em> Unknown operation.";
-            break;
+            break;*/
     }
 }
 
@@ -81,7 +81,6 @@ function clearError() {
         errorElement.style.display = 'none';
     }
 }
-
 
 function validate(input) {
     const trimmedInput = input.trim();
@@ -134,7 +133,6 @@ function square() {
     fillInfo(result, 'square');
     clearError();
 }
-
 function mod() {
     let input = parseFloat(document.getElementById('inputField').value);
     if (!validate(input)) return;
@@ -143,8 +141,6 @@ function mod() {
     fillInfo(result, 'modulo');
     clearError();
 }
-
-
 function fact() {
     let input = document.getElementById('inputField').value;
     let validatedInput = validate(input);
@@ -161,7 +157,6 @@ function fact() {
     fillInfo(result, 'factorial');
     clearError();
 }
-
 function squareRoot() {
     let input = document.getElementById('inputField').value;
     let validatedInput = validate(input);
@@ -175,7 +170,6 @@ function squareRoot() {
     fillInfo(result, 'squareRoot');
     clearError();
 }
- 
 function exponentiate() {
     let base = document.getElementById('inputField').value;
     let power = document.getElementById('powerField').value;
@@ -202,7 +196,6 @@ function setOperator(op) {
     document.getElementById('inputField').value = ''; // Clear input field for second operand
     clearError();
 }
-
 function eq() {
     let secondOperand = document.getElementById('inputField').value;
     let validatedSecondOperand = validate(secondOperand);
@@ -246,7 +239,6 @@ function sum() {
     fillInfo(result, 'sum');
     clearError();
 }
-
 function sort() {
     let values = getCsvValues();
     if (!values) return;
@@ -255,7 +247,6 @@ function sort() {
     fillInfo(values.join(','), 'sort'); 
     clearError();
 }
-
 function reverse() {
     let values = getCsvValues();
     if (!values) return;
@@ -264,7 +255,6 @@ function reverse() {
     fillInfo(values.join(','), 'reverse');
     clearError();
 }
-
 function removeLast() {
     let values = getCsvValues();
     if (!values) return;
@@ -277,7 +267,6 @@ function removeLast() {
     fillInfo(values.join(','), 'removeLast');
     clearError();
 }
-
 function calculateAverage() {
     let values = getCsvValues();
     if (!values || values.length === 0) {
@@ -290,7 +279,6 @@ function calculateAverage() {
     fillInfo(average, 'average');
     clearError();
 }
-
 function removeSpecific() {
     let values = getCsvValues();
     let valueToRemove = document.getElementById('removeValueField').value.trim();
@@ -310,7 +298,6 @@ function removeSpecific() {
     fillInfo(filteredValues.join(','), 'removeSpecific');
     clearError();
 }
-
 function getCsvValues() {
     let input = document.getElementById('inputField').value.trim();
         if (!validate(input)) {
