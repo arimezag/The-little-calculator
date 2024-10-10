@@ -29,7 +29,7 @@ h1 {
 }
 
 /* Style for the information title */
-.info-title {
+.big {
     font-size: 20px;
     color: gray;
     font-family: Verdana, sans-serif;
@@ -102,12 +102,6 @@ button:hover {
     background-color: #5a5a5a;
 }
 
-/* Styling the error message */
-#error {
-    color: red;
-    font-size: 14px;
-    margin-top: 10px;
-}
 
 /* Section headings */
 h3 {
@@ -121,7 +115,7 @@ h3 {
     text-transform: uppercase;
 }
 
-/* Styling for the power input field */
+/* Styling for the power/divisor input field */
 .small-input {
     width: 60px;
     height: 30px;
@@ -136,6 +130,39 @@ h3 {
     margin-right: 5px;
 }
 
+/* Styling for the alert message */
+.custom-alert {
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: darkblue;
+    color: white;
+    padding: 60px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.custom-alert button {
+    background-color: white;
+    color: darkblue;
+    border: none;
+    padding: 10px 40px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-alert button:hover {
+    background-color: lightgray;
+}
 
 
 

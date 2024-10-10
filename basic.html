@@ -12,26 +12,26 @@
 
         <!-- Input Field -->
         <input type="text" id="inputField" placeholder="Enter number or CSV list">
-        <div id="error" style="color:red; display:none;"></div>
 
         <!-- Information Field -->
-        <h2 id="info" class="info-title" title="Info about the number">Information about the number</h2>
+        <h2 id="info" class="big" title="Info about the number">Information about the number</h2>
 
         <div class="operations-container">
             <!-- Unary Operations -->
             <div class="unary-operations">
                 <h3>UNARY OPERATIONS</h3>
                 <div class="button-group">
-                    <button id="square" class="button" onclick="square()" tabindex="0" aria-label="Square the number">X²</button>
-                    <button id="sqrt" class="button" onclick="squareRoot()" tabindex="0" aria-label="Square root">√</button>
+                    <button id="square" class="button" onclick="square()" tabindex="0">X²</button>
+                    <button id="sqrt" class="button" onclick="squareRoot()" tabindex="0">√</button>
+                    <button id="factorial" class="button" onclick="fact()" tabindex="0">X!</button>
                 </div>
                 <div class="button-group">
-                    <button id="modulo" class="button" onclick="mod()" tabindex="0" aria-label="Modulo">|X|</button>
-                    <button id="factorial" class="button" onclick="fact()" tabindex="0" aria-label="Factorial">X!</button>
+                    <input id="divisorField" type="number" class="small-input" placeholder="Divisor">
+                    <button id="modulo" class="button" onclick="mod()" tabindex="0">|X|</button>
                 </div>
                 <div class="button-group">
                     <input id="powerField" type="number" class="small-input" placeholder="Power">
-                    <button id="exponentiate" class="button" onclick="exponentiate()" tabindex="0" aria-label="Exponentiation">X^x</button>
+                    <button id="exponentiate" class="button" onclick="exponentiate()" tabindex="0"">X^x</button>
                 </div>
             </div>
 
@@ -39,15 +39,15 @@
             <div class="binary-operations">
                 <h3>BINARY OPERATIONS</h3>
                 <div class="button-group">
-                    <button id="addition" class="button" onclick="setOperator('+')" tabindex="0" aria-label="Addition">+</button>
-                    <button id="subtraction" class="button" onclick="setOperator('-')" tabindex="0" aria-label="Subtraction">-</button>
+                    <button id="addition" class="button" onclick="setOperator('+')" tabindex="0">+</button>
+                    <button id="subtraction" class="button" onclick="setOperator('-')" tabindex="0">-</button>
                 </div>
                 <div class="button-group">
-                    <button id="multiplication" class="button" onclick="setOperator('*')" tabindex="0" aria-label="Multiplication">×</button>
-                    <button id="division" class="button" onclick="setOperator('/')" tabindex="0" aria-label="Division">÷</button>
+                    <button id="multiplication" class="button" onclick="setOperator('*')" tabindex="0">×</button>
+                    <button id="division" class="button" onclick="setOperator('/')" tabindex="0">÷</button>
                 </div>
                 <div class="button-group">
-                    <button id="equal" class="button equal" onclick="eq()" tabindex="0" aria-label="Equal">=</button>
+                    <button id="equal" class="button equal" onclick="eq()" tabindex="0">=</button>
                 </div>
             </div>
         </div>
@@ -69,9 +69,13 @@
         </div>
 
         <!-- Error Handling -->
+        <div id="customAlert" class="custom-alert" style="display: none;">
+            <span id="alertMessage"></span>
+            <button onclick="closeAlert()">Close</button>
+        </div>
+
         <div class="download-log">
             <button id="downloaderror" class="button rectangular" onclick="downloadErrorLog()">Download Error Log</button>
-
         </div>
     </div>
 

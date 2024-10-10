@@ -1,125 +1,105 @@
 //Information field
+const operationLabels = {
+    addition: "Addition",
+    subtraction: "Subtraction",
+    multiplication: "Multiplication",
+    division: "Division",
+    square: "Square",
+    squareRoot: "Square Root",
+    modulo: "Modulo",
+    factorial: "Factorial",
+    exponentiation: "Exponentiation",
+    sum: "CSV Sum",
+    average: "CSV Average"
+};
+function generateTitle(operation, result) {
+    let resultTitle = "";
+    if (result < 100) {
+        resultTitle = "The result is less than 100";
+    } else if (result >= 100 && result <= 200) {
+        resultTitle = "The result is between 100 and 200";
+    } else {
+        resultTitle = "The result is greater than 200";
+    }
+    if (['sort', 'reverse', 'removeLast', 'removeSpecific'].includes(operation)) {
+        return "List of values processed";
+    }
+    if (operation === '+') {
+        operation = 'addition';
+    } else if (operation === '-') {
+        operation = 'subtraction';
+    } else if (operation === '*') {
+        operation = 'multiplication';
+    } else if (operation === '/') {
+        operation = 'division';
+    }
+    let operationLabel = operationLabels[operation] || "Unknown operation";
+    return `Operation: ${operationLabel}. ${resultTitle}`;
+}
 function fillInfo(result, operation) {
     let infoElement = document.getElementById('info');
-    if (result < 100) {
-        infoElement.innerHTML = "<strong>Info:</strong> The result is less than 100.";
-    } else if (result >= 100 && result <= 200) {
-        infoElement.innerHTML = "<strong>Info:</strong> The result is between 100 and 200.";
+    infoElement.innerHTML = generateTitle(operation, result);
+    let output = "";
+    if (['addition', 'subtraction', 'multiplication', 'division'].includes(operation)) {
+        output = `<em>Operation:</em> ${operationLabels[operation]}. The result is ${result}.`;
+    } else if (['square', 'squareRoot', 'modulo', 'factorial', 'exponentiation'].includes(operation)) {
+        output = `<em>Operation:</em> ${operationLabels[operation]}. The result is ${result}.`;
+    } else if (['sum', 'average'].includes(operation)) {
+        output = `<em>Operation:</em> ${operationLabels[operation]}. The result is ${result}.`;
+    } else if (['sort', 'reverse', 'removeLast', 'removeSpecific'].includes(operation)) {
+        output = "List of values processed";
     } else {
-        infoElement.innerHTML = "<strong>Info:</strong> The result is greater than 200.";
-    }
-    switch (operation) {
-        case 'addition':
-            infoElement.innerHTML += "<br><em>Operation:</em> Addition. The sum is " + result + ".";
-            break;
-        case 'subtraction':
-            infoElement.innerHTML += "<br><em>Operation:</em> Subtraction. The difference is " + result + ".";
-            break;
-        case 'multiplication':
-            infoElement.innerHTML += "<br><em>Operation:</em> Multiplication. The product is " + result + ".";
-            break;
-        case 'division':
-            if (result === Infinity || result === -Infinity) {
-                infoElement.innerHTML += "<br><em>Operation:</em> Division. Division by zero is not allowed.";
-            } else {
-                infoElement.innerHTML += "<br><em>Operation:</em> Division. The quotient is " + result + ".";
-            }
-            break;
-        case 'square':
-            infoElement.innerHTML += "<br><em>Operation:</em> Square. The result is " + result + ".";
-            break;
-        case 'modulo':
-            infoElement.innerHTML += "<br><em>Operation:</em> Modulo. The absolute value is " + result + ".";
-            break;
-        case 'factorial':
-            infoElement.innerHTML += "<br><em>Operation:</em> Factorial. The factorial result is " + result + ".";
-            break;
-        case 'squareRoot':
-            if (result < 0) {
-                infoElement.innerHTML += "<br><em>Operation:</em> Square Root. Negative numbers cannot have real square roots.";
-            } else {
-                infoElement.innerHTML += "<br><em>Operation:</em> Square Root. The square root is " + result + ".";
-            }
-            break;
-        case 'exponentiation':
-            infoElement.innerHTML += "<br><em>Operation:</em> Exponentiation. The result is " + result + ".";
-            break;
-        case 'sum':
-            infoElement.innerHTML += "<br><em>Operation:</em> CSV Sum. The total sum is " + result + ".";
-            break;
-        case 'sort':
-            infoElement.innerHTML += "<br><em>Operation:</em> CSV Sort. The values have been sorted.";
-            break;
-        case 'reverse':
-            infoElement.innerHTML += "<br><em>Operation:</em> CSV Reverse. The values have been reversed.";
-            break;
-        case 'average':
-            infoElement.innerHTML += "<br><em>Operation:</em> CSV Average. The average of the values is " + result + ".";
-            break;
-        /*default:
-            infoElement.innerHTML += "<br><em>Operation:</em> Unknown operation.";
-            break;*/
+        output = "<em>Operation:</em> Unknown operation.";
     }
 }
 
 
 // Error handling
-function displayError(message) {
-    let errorElement = document.getElementById('error');
-    if (errorElement) {
-        errorElement.innerHTML = message;
-        errorElement.style.display = 'block';
-    } else {
-        console.error('Error element not found in the DOM');
-    }
-}
+let errorLog = [];
 
-function clearError() {
-    let errorElement = document.getElementById('error');
-    if (errorElement) {
-        errorElement.innerHTML = '';
-        errorElement.style.display = 'none';
-    }
+function displayAlert(message) {
+    const alertBox = document.getElementById('customAlert');
+    const alertMessage = document.getElementById('alertMessage');
+    alertMessage.textContent = message;
+    alertBox.style.display = 'block';
 }
-
+function closeAlert() {
+    const alertBox = document.getElementById('customAlert');
+    alertBox.style.display = 'none';
+}
 function validate(input) {
     const trimmedInput = input.trim();
     if (trimmedInput === '') {
-        logError('Error: Input field cannot be empty.');
-        displayError('Error: Input cannot be empty.');
+        displayAlert('Error: Input field cannot be empty.');
         return false;
     }
     if (!isNaN(trimmedInput)) {
-        return parseFloat(trimmedInput); // Return the number if valid
+        return parseFloat(trimmedInput);
     }
     const csvPattern = /^-?\d+(\.\d+)?(,-?\d+(\.\d+)?)*$/;
     if (csvPattern.test(trimmedInput)) {
-        return trimmedInput.split(',').map(Number); // Return CSV as an array of numbers
+        return trimmedInput.split(',').map(Number);
     }
-    logError('Error: Invalid input. Please enter a number or a valid CSV list.');
-    displayError('Error: Invalid input format.');
+    displayAlert('Error: Invalid input. Please enter a number or a valid CSV list.');
     return false;
 }
-
-let errorLog = [];
 function logError(message) {
     let timestamp = new Date().toLocaleString();
     errorLog.push({ message: message, time: timestamp });
     console.error(`[${timestamp}] ${message}`);
-    displayError(message);
 }
+function downloadLogs() {
+    const csvContent = "data:text/csv;charset=utf-8," 
+        + "Time,Message\n" 
+        + errorLog.map(e => `${e.time},${e.message}`).join("\n");
 
-function downloadErrorLog() {
-    if (errorLog.length === 0) {
-        displayError('No errors to download.');
-        return;
-    }
-    let data = JSON.stringify(errorLog, null, 2);
-    let blob = new Blob([data], { type: 'application/json' });
-    let link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'error-log.json';
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "error_logs.csv");
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
 }
 
 
@@ -131,22 +111,24 @@ function square() {
     let result = validatedInput * validatedInput;
     document.getElementById('inputField').value = result;
     fillInfo(result, 'square');
-    clearError();
 }
 function mod() {
-    let input = parseFloat(document.getElementById('inputField').value);
-    if (!validate(input)) return;
-    let result = (input < 0) ? -input : input;
+    let input1 = document.getElementById('inputField').value;
+    let input2 = document.getElementById('divisorField').value;
+    if (!validate(input1) || !validate(input2)) return;
+    if (input2 == 0) { // Use == for comparison to allow string input
+        displayAlert("Error: Division by zero is not allowed.");
+        return;
+    }
+    let result = input1 % input2;
     document.getElementById('inputField').value = result;
     fillInfo(result, 'modulo');
-    clearError();
 }
 function fact() {
     let input = document.getElementById('inputField').value;
     let validatedInput = validate(input);
     if (validatedInput === false || Array.isArray(validatedInput) || validatedInput < 0 || !Number.isInteger(validatedInput)) {
-        logError('Error: Factorial requires a non-negative integer.');
-        displayError('Error: Factorial requires a non-negative integer.');
+        displayAlert('Error: Factorial requires a non-negative integer.');
         return;
     }
     let result = 1;
@@ -155,20 +137,17 @@ function fact() {
     }
     document.getElementById('inputField').value = result;
     fillInfo(result, 'factorial');
-    clearError();
 }
 function squareRoot() {
     let input = document.getElementById('inputField').value;
     let validatedInput = validate(input);
     if (validatedInput === false || Array.isArray(validatedInput) || validatedInput < 0) {
-        logError('Error: Cannot calculate square root of a negative number.');
-        displayError('Error: Cannot calculate square root of a negative number.');
+        displayAlert('Error: Cannot calculate square root of a negative number.');
         return;
     }
     let result = Math.sqrt(validatedInput);
     document.getElementById('inputField').value = result;
     fillInfo(result, 'squareRoot');
-    clearError();
 }
 function exponentiate() {
     let base = document.getElementById('inputField').value;
@@ -179,11 +158,10 @@ function exponentiate() {
     let result = Math.pow(validatedBase, validatedPower);
     document.getElementById('inputField').value = result;
     fillInfo(result, 'exponentiation');
-    clearError();
 }
 
 
-//Binary operations
+// Binary operations
 let firstOperand = null;
 let operator = null;
 
@@ -193,8 +171,7 @@ function setOperator(op) {
     if (validatedInput === false || Array.isArray(validatedInput)) return;
     firstOperand = validatedInput;
     operator = op;
-    document.getElementById('inputField').value = ''; // Clear input field for second operand
-    clearError();
+    document.getElementById('inputField').value = '';
 }
 function eq() {
     let secondOperand = document.getElementById('inputField').value;
@@ -213,20 +190,17 @@ function eq() {
             break;
         case '/':
             if (validatedSecondOperand === 0) {
-                logError('Error: Division by zero is not allowed.');
-                displayError('Error: Division by zero is not allowed.');
+                displayAlert('Error: Division by zero is not allowed.');
                 return;
             }
             result = firstOperand / validatedSecondOperand;
             break;
         default:
-            logError('Error: Unknown operator.');
-            displayError('Error: Unknown operator.');
+            displayAlert('Error: Unknown operator.');
             return;
     }
     document.getElementById('inputField').value = result;
     fillInfo(result, operator);
-    clearError();
 }
 
 
@@ -237,7 +211,6 @@ function sum() {
     let result = values.reduce((acc, val) => acc + val, 0);
     document.getElementById('inputField').value = result;
     fillInfo(result, 'sum');
-    clearError();
 }
 function sort() {
     let values = getCsvValues();
@@ -245,7 +218,6 @@ function sort() {
     values.sort((a, b) => a - b);
     document.getElementById('inputField').value = values.join(',');
     fillInfo(values.join(','), 'sort'); 
-    clearError();
 }
 function reverse() {
     let values = getCsvValues();
@@ -253,66 +225,52 @@ function reverse() {
     values.reverse();
     document.getElementById('inputField').value = values.join(',');
     fillInfo(values.join(','), 'reverse');
-    clearError();
 }
 function removeLast() {
     let values = getCsvValues();
     if (!values) return;
-    if (values.length === 0) {
-        logError('Error: No elements to remove.');
-        return;
-    }
     values.pop();
     document.getElementById('inputField').value = values.join(',');
     fillInfo(values.join(','), 'removeLast');
-    clearError();
 }
 function calculateAverage() {
     let values = getCsvValues();
-    if (!values || values.length === 0) {
-        logError("Error: No valid numbers for average calculation.");
-        return;
-    }
     let total = values.reduce((acc, val) => acc + val, 0);
     let average = total / values.length;
     document.getElementById('inputField').value = average;
     fillInfo(average, 'average');
-    clearError();
 }
 function removeSpecific() {
     let values = getCsvValues();
     let valueToRemove = document.getElementById('removeValueField').value.trim();
+    if (valueToRemove === "") {
+        displayAlert('Error: You have not provided the element that you want to eliminate.');
+        return;
+    }
     if (values === null || isNaN(valueToRemove) || valueToRemove === "") {
-        logError("Error: Invalid CSV or value to remove.");
-        displayError('Error: Please provide a valid value to remove.');
         return;
     }
     let filteredValues = values.filter(val => val != Number(valueToRemove));
     if (filteredValues.length === values.length) {
-        logError('Error: Value not found in the CSV.');
-        displayError('Error: Value not found.');
+        displayAlert('Error: Value not found. Please provide a valid value to remove.');
         return;
     }
-
     document.getElementById('inputField').value = filteredValues.join(',');
     fillInfo(filteredValues.join(','), 'removeSpecific');
-    clearError();
 }
 function getCsvValues() {
     let input = document.getElementById('inputField').value.trim();
-        if (!validate(input)) {
-        logError('Error: Invalid CSV input. Please enter a valid comma-separated list of numbers.');
+    if (!validate(input)) {
+        displayAlert('Error: Invalid CSV input. Please enter a valid comma-separated list of numbers.');
         return null;
     }
     let values = input.split(',').map(Number);
     if (values.some(isNaN)) {
-        logError('Error: CSV contains non-numeric values.');
+        displayAlert('Error: CSV contains non-numeric values.');
         return null;
     }
-    clearError();
     return values;
 }
-
 
 // Keyboard shortcuts
 document.addEventListener('keydown', function(event) {
@@ -331,13 +289,6 @@ document.addEventListener('keydown', function(event) {
             break;
         case 'Enter':
             eq();
-            break;
-        case '%':
-            mod();
-            break;
-        case '^':
-        case 'e':
-            exponentiate();
             break;
         case 's':
             square();
