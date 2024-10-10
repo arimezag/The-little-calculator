@@ -110,7 +110,6 @@ function downloadLogs() {
 }
 
 
-
 // Unary Operations with normal functions
 function square() {
     let input = document.getElementById('inputField').value;
@@ -120,23 +119,6 @@ function square() {
     document.getElementById('inputField').value = result;
     fillInfo(result, 'square');
 }
-
-/*
-//revisa la division by zero si es esta operación sino cambiar operación 
-function mod() {
-    let input1 = document.getElementById('inputField').value;
-    let input2 = document.getElementById('divisorField').value;
-    if (!validate(input1) || !validate(input2)) return;
-    if (input2 === 0) {
-        displayAlert("Error: Division by zero is not allowed.");
-        logError("Error: Division by zero is not allowed.")
-        return;
-    }
-    let result = input1 % input2;
-    document.getElementById('inputField').value = result;
-    fillInfo(result, 'modulo');
-}
-
 function mod() {
     let inputField = document.getElementById('inputField');
     let inputValue = parseFloat(inputField.value);
@@ -145,12 +127,10 @@ function mod() {
         logError("Error: Invalid input, not a number.");
         return;
     }
-    let result = (inputValue < 0) ? -inputValue : inputValue;
+    let result = Math.abs(inputValue);
     inputField.value = result;
-    fillInfo(result, 'modulus');
-}*/
-
-
+    fillInfo(result, 'modulo');
+}
 function fact() {
     let input = document.getElementById('inputField').value;
     let validatedInput = validate(input);
@@ -200,22 +180,17 @@ function exponentiate() {
 };
 const mod = () => {
     let input1 = document.getElementById('inputField').value;
-    let input2 = document.getElementById('divisorField').value;
-    if (!validate(input1) || !validate(input2)) return;
-    if (input2 == 0) {
-        displayAlert("Error: Division by zero is not allowed.");
-        logError("Error: Division by zero is not allowed.")
-        return;
-    }
-    let result = input1 % input2;
-    document.getElementById('inputField').value = result;
-    fillInfo(result, 'modulo');
-};
-const mod = () => {
-    let input1 = document.getElementById('inputField').value;
     let validatedInput = validate(input1);
     if (!validatedInput) return;
     let result = validatedInput < 0 ? -validatedInput : validatedInput;
+    document.getElementById('inputField').value = result;
+    fillInfo(result, 'modulus');
+};
+const mod = () => {
+    let input = document.getElementById('inputField').value;
+    let validatedInput = validate(input);
+    if (!validatedInput) return;
+    let result = Math.abs(validatedInput);
     document.getElementById('inputField').value = result;
     fillInfo(result, 'modulus');
 };
