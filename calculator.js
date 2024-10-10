@@ -110,7 +110,8 @@ function downloadLogs() {
 }
 
 
-// Unary Operations
+
+// Unary Operations with normal functions
 function square() {
     let input = document.getElementById('inputField').value;
     let validatedInput = validate(input);
@@ -119,11 +120,12 @@ function square() {
     document.getElementById('inputField').value = result;
     fillInfo(result, 'square');
 }
+//revisa la division by zero si es esta operación sino cambiar operación 
 function mod() {
     let input1 = document.getElementById('inputField').value;
     let input2 = document.getElementById('divisorField').value;
     if (!validate(input1) || !validate(input2)) return;
-    if (input2 == 0) {
+    if (input2 === 0) {
         displayAlert("Error: Division by zero is not allowed.");
         logError("Error: Division by zero is not allowed.")
         return;
@@ -132,6 +134,7 @@ function mod() {
     document.getElementById('inputField').value = result;
     fillInfo(result, 'modulo');
 }
+
 function fact() {
     let input = document.getElementById('inputField').value;
     let validatedInput = validate(input);
@@ -170,7 +173,7 @@ function exponentiate() {
     fillInfo(result, 'exponentiation');
 }
 
-//Unary operations - arrow function notation
+//Unary operations - with functions that follow arrow function notation
 /*const square = () => {
     let input = document.getElementById('inputField').value;
     let validatedInput = validate(input);
@@ -179,7 +182,6 @@ function exponentiate() {
     document.getElementById('inputField').value = result;
     fillInfo(result, 'square');
 };
-
 const mod = () => {
     let input1 = document.getElementById('inputField').value;
     let input2 = document.getElementById('divisorField').value;
@@ -193,7 +195,6 @@ const mod = () => {
     document.getElementById('inputField').value = result;
     fillInfo(result, 'modulo');
 };
-
 const fact = () => {
     let input = document.getElementById('inputField').value;
     let validatedInput = validate(input);
@@ -209,7 +210,6 @@ const fact = () => {
     document.getElementById('inputField').value = result;
     fillInfo(result, 'factorial');
 };
-
 const squareRoot = () => {
     let input = document.getElementById('inputField').value;
     let validatedInput = validate(input);
@@ -222,7 +222,6 @@ const squareRoot = () => {
     document.getElementById('inputField').value = result;
     fillInfo(result, 'squareRoot');
 };
-
 const exponentiate = () => {
     let base = document.getElementById('inputField').value;
     let power = document.getElementById('powerField').value;
