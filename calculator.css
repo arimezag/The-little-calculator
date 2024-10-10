@@ -52,6 +52,7 @@ input[type="text"] {
 /* Styling for button groups */
 .button-group, .csv-button-group {
     display: flex;
+    align-items: center;
     justify-content: center;
     margin-bottom: 10px;
 }
@@ -62,8 +63,6 @@ input[type="text"] {
     justify-content: space-between;
     margin-bottom: 20px;
 }
-
-/* Unary Operations */
 .unary-operations, .binary-operations {
     flex: 1;
     margin-right: 10px;
@@ -89,19 +88,16 @@ button.equal {
     background-color: lightblue;
     border-radius: 50%;
 }
-
 button.rectangular {
     border-radius: 20px;
     width: 120px;
     height: 60px;
 }
 
-
 /* Hover effect for buttons */
 button:hover {
     background-color: #5a5a5a;
 }
-
 
 /* Section headings */
 h3 {
@@ -122,10 +118,9 @@ h3 {
     padding: 5px;
     margin-right: 5px;
 }
-
 #removeValueField {
-    width: 230px;
-    height: 30px;
+    width: 200px;
+    height: 45px;
     padding: 5px;
     margin-right: 5px;
 }
