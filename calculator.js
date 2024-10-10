@@ -120,6 +120,8 @@ function square() {
     document.getElementById('inputField').value = result;
     fillInfo(result, 'square');
 }
+
+/*
 //revisa la division by zero si es esta operación sino cambiar operación 
 function mod() {
     let input1 = document.getElementById('inputField').value;
@@ -134,6 +136,20 @@ function mod() {
     document.getElementById('inputField').value = result;
     fillInfo(result, 'modulo');
 }
+
+function mod() {
+    let inputField = document.getElementById('inputField');
+    let inputValue = parseFloat(inputField.value);
+    if (isNaN(inputValue)) {
+        displayAlert("Error: Please enter a valid number.");
+        logError("Error: Invalid input, not a number.");
+        return;
+    }
+    let result = (inputValue < 0) ? -inputValue : inputValue;
+    inputField.value = result;
+    fillInfo(result, 'modulus');
+}*/
+
 
 function fact() {
     let input = document.getElementById('inputField').value;
@@ -194,6 +210,14 @@ const mod = () => {
     let result = input1 % input2;
     document.getElementById('inputField').value = result;
     fillInfo(result, 'modulo');
+};
+const mod = () => {
+    let input1 = document.getElementById('inputField').value;
+    let validatedInput = validate(input1);
+    if (!validatedInput) return;
+    let result = validatedInput < 0 ? -validatedInput : validatedInput;
+    document.getElementById('inputField').value = result;
+    fillInfo(result, 'modulus');
 };
 const fact = () => {
     let input = document.getElementById('inputField').value;
