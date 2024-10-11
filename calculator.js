@@ -53,10 +53,8 @@ function fillInfo(result, operation) {
     }
 }
 
-
 // Error handling
 let errorLog = [];
-
 function displayAlert(message) {
     const alertBox = document.getElementById('customAlert');
     const alertMessage = document.getElementById('alertMessage');
@@ -67,7 +65,7 @@ function closeAlert() {
     const alertBox = document.getElementById('customAlert');
     alertBox.style.display = 'none';
 }
-function validate(input) {
+function validate(input, operation) {
     const trimmedInput = input.trim();
     if (trimmedInput === '') {
         const errorMessage = 'Error: Input field cannot be empty.';
@@ -75,13 +73,27 @@ function validate(input) {
         logError(errorMessage);
         return false;
     }
-    if (!isNaN(trimmedInput)) {
-        return parseFloat(trimmedInput);
+    if (!isNaN(trimmedInput) && trimmedInput !== '') {
+        const parsedInput = parseFloat(trimmedInput);
+        if (['sum', 'sort', 'reverse', 'removeLast', 'removeSpecific', 'average'].includes(operation)) {
+            const errorMessage = 'Invalid numbers or numbers out of range for CSV operations: Single number provided.';
+            displayAlert(errorMessage);
+            logError(errorMessage);
+            return false;
+        }
+        return parsedInput;
     }
     const csvPattern = /^-?\d+(\.\d+)?(,-?\d+(\.\d+)?)*$/;
-    if (csvPattern.test(trimmedInput)) {
-        return trimmedInput.split(',').map(Number);
-    }
+    if (csvPattern.test(trimmedInput) && !trimmedInput.endsWith(',')) {
+        const csvValues = trimmedInput.split(',').map(Number);        
+        if (['addition', 'subtraction', 'multiplication', 'division', 'square', 'squareRoot', 'modulo', 'factorial', 'exponentiation'].includes(operation)) {
+            const errorMessage = 'Invalid numbers or numbers out of range for unary or binary operations: CSV list provided.';
+            displayAlert(errorMessage);
+            logError(errorMessage);
+            return false;
+        }
+        return csvValues;
+    }    
     const errorMessage = 'Error: Invalid input. Please enter a number or a valid CSV list.';
     displayAlert(errorMessage);
     logError(errorMessage);
@@ -109,94 +121,28 @@ function downloadLogs() {
     document.body.removeChild(link);
 }
 
-
-// Unary Operations with normal functions
-function square() {
+// Unary Operations with arrow function notation
+const square = () => {
     let input = document.getElementById('inputField').value;
-    let validatedInput = validate(input);
-    if (validatedInput === false || Array.isArray(validatedInput)) return;
-    let result = validatedInput * validatedInput;
-    document.getElementById('inputField').value = result;
-    fillInfo(result, 'square');
-}
-function mod() {
-    let inputField = document.getElementById('inputField');
-    let inputValue = parseFloat(inputField.value);
-    if (isNaN(inputValue)) {
-        displayAlert("Error: Please enter a valid number.");
-        logError("Error: Invalid input, not a number.");
-        return;
+    let validatedInput = validate(input, 'square');
+    if (validatedInput === false) return;    
+    if (!Array.isArray(validatedInput)) {
+        let result = validatedInput * validatedInput;
+        document.getElementById('inputField').value = result;
+        fillInfo(result, 'square');
     }
-    let result = Math.abs(inputValue);
-    inputField.value = result;
-    fillInfo(result, 'modulo');
-}
-function fact() {
-    let input = document.getElementById('inputField').value;
-    let validatedInput = validate(input);
-    if (validatedInput === false || Array.isArray(validatedInput) || validatedInput < 0 || !Number.isInteger(validatedInput)) {
-        displayAlert('Error: Factorial requires a non-negative integer.');
-        logError('Error: Factorial requires a non-negative integer.');
-        return;
-    }
-    let result = 1;
-    for (let i = 1; i <= validatedInput; i++) {
-        result *= i;
-    }
-    document.getElementById('inputField').value = result;
-    fillInfo(result, 'factorial');
-}
-function squareRoot() {
-    let input = document.getElementById('inputField').value;
-    let validatedInput = validate(input);
-    if (validatedInput === false || Array.isArray(validatedInput) || validatedInput < 0) {
-        displayAlert('Error: Cannot calculate square root of a negative number.');
-        logError('Error: Cannot calculate square root of a negative number.');
-        return;
-    }
-    let result = Math.sqrt(validatedInput);
-    document.getElementById('inputField').value = result;
-    fillInfo(result, 'squareRoot');
-}
-function exponentiate() {
-    let base = document.getElementById('inputField').value;
-    let power = document.getElementById('powerField').value;
-    let validatedBase = validate(base);
-    let validatedPower = validate(power);
-    if (validatedBase === false || validatedPower === false || Array.isArray(validatedBase) || Array.isArray(validatedPower)) return;
-    let result = Math.pow(validatedBase, validatedPower);
-    document.getElementById('inputField').value = result;
-    fillInfo(result, 'exponentiation');
-}
-
-//Unary operations - with functions that follow arrow function notation
-/*const square = () => {
-    let input = document.getElementById('inputField').value;
-    let validatedInput = validate(input);
-    if (validatedInput === false || Array.isArray(validatedInput)) return;
-    let result = validatedInput * validatedInput;
-    document.getElementById('inputField').value = result;
-    fillInfo(result, 'square');
-};
-const mod = () => {
-    let input1 = document.getElementById('inputField').value;
-    let validatedInput = validate(input1);
-    if (!validatedInput) return;
-    let result = validatedInput < 0 ? -validatedInput : validatedInput;
-    document.getElementById('inputField').value = result;
-    fillInfo(result, 'modulus');
 };
 const mod = () => {
     let input = document.getElementById('inputField').value;
-    let validatedInput = validate(input);
-    if (!validatedInput) return;
+    let validatedInput = validate(input, 'modulo');
+    if (validatedInput === false || Array.isArray(validatedInput)) return;
     let result = Math.abs(validatedInput);
     document.getElementById('inputField').value = result;
-    fillInfo(result, 'modulus');
+    fillInfo(result, 'modulo');
 };
 const fact = () => {
     let input = document.getElementById('inputField').value;
-    let validatedInput = validate(input);
+    let validatedInput = validate(input, 'fact');
     if (validatedInput === false || Array.isArray(validatedInput) || validatedInput < 0 || !Number.isInteger(validatedInput)) {
         displayAlert('Error: Factorial requires a non-negative integer.');
         logError('Error: Factorial requires a non-negative integer.');
@@ -211,7 +157,7 @@ const fact = () => {
 };
 const squareRoot = () => {
     let input = document.getElementById('inputField').value;
-    let validatedInput = validate(input);
+    let validatedInput = validate(input, 'squareRoot');    
     if (validatedInput === false || Array.isArray(validatedInput) || validatedInput < 0) {
         displayAlert('Error: Cannot calculate square root of a negative number.');
         logError('Error: Cannot calculate square root of a negative number.');
@@ -223,25 +169,86 @@ const squareRoot = () => {
 };
 const exponentiate = () => {
     let base = document.getElementById('inputField').value;
-    let power = document.getElementById('powerField').value;
-    let validatedBase = validate(base);
-    let validatedPower = validate(power);
-    if (validatedBase === false || validatedPower === false || Array.isArray(validatedBase) || Array.isArray(validatedPower)) return;
+    let power = document.getElementById('powerField').value;    
+    let validatedBase = validate(base, 'exponentiation');
+    let validatedPower = validate(power, 'exponentiation');    
+    if (validatedBase === false || validatedPower === false || Array.isArray(validatedBase) || Array.isArray(validatedPower)) return;    
     let result = Math.pow(validatedBase, validatedPower);
     document.getElementById('inputField').value = result;
     fillInfo(result, 'exponentiation');
 };
-*/
 
 
-// Binary operations
+/*
+// Unary Operations with normal functions
+function square() {
+    let input = document.getElementById('inputField').value;
+    let validatedInput = validate(input, 'square');
+    if (validatedInput === false) return;    
+    if (!Array.isArray(validatedInput)) {
+        let result = validatedInput * validatedInput;
+        document.getElementById('inputField').value = result;
+        fillInfo(result, 'square');
+    }
+}
+function mod() {
+    let input = document.getElementById('inputField').value;
+    let validatedInput = validate(input, 'modulo');
+    if (validatedInput === false || Array.isArray(validatedInput)) return;
+    let result = Math.abs(validatedInput);
+    document.getElementById('inputField').value = result;
+    fillInfo(result, 'modulo');
+}
+function fact() {
+    let input = document.getElementById('inputField').value;
+    let validatedInput = validate(input, 'fact');
+    if (validatedInput === false || Array.isArray(validatedInput) || validatedInput < 0 || !Number.isInteger(validatedInput)) {
+        displayAlert('Error: Factorial requires a non-negative integer.');
+        logError('Error: Factorial requires a non-negative integer.');
+        return;
+    }
+    let result = 1;
+    for (let i = 1; i <= validatedInput; i++) {
+        result *= i;
+    }
+    document.getElementById('inputField').value = result;
+    fillInfo(result, 'factorial');
+}
+function squareRoot() {
+    let input = document.getElementById('inputField').value;
+    let validatedInput = validate(input, 'squareRoot');    
+    if (validatedInput === false || Array.isArray(validatedInput) || validatedInput < 0) {
+        displayAlert('Error: Cannot calculate square root of a negative number.');
+        logError('Error: Cannot calculate square root of a negative number.');
+        return;
+    }
+    let result = Math.sqrt(validatedInput);
+    document.getElementById('inputField').value = result;
+    fillInfo(result, 'squareRoot');
+}
+function exponentiate() {
+    let base = document.getElementById('inputField').value;
+    let power = document.getElementById('powerField').value;    
+    let validatedBase = validate(base, 'exponentiation');
+    let validatedPower = validate(power, 'exponentiation');    
+    if (validatedBase === false || validatedPower === false || Array.isArray(validatedBase) || Array.isArray(validatedPower)) return;    
+    let result = Math.pow(validatedBase, validatedPower);
+    document.getElementById('inputField').value = result;
+    fillInfo(result, 'exponentiation');
+}*/
+
+// Binary operations with global variables
 let firstOperand = null;
 let operator = null;
 
 function setOperator(op) {
     let input = document.getElementById('inputField').value;
     let validatedInput = validate(input);
-    if (validatedInput === false || Array.isArray(validatedInput)) return;
+    if (validatedInput === false || Array.isArray(validatedInput)) {
+        displayAlert('Error: Invalid numbers or numbers out of range for unary or binary operations.');
+        logError('Error: Invalid input provided for binary operation.');
+        return;
+    }
     firstOperand = validatedInput;
     operator = op;
     document.getElementById('inputField').value = '';
@@ -249,7 +256,11 @@ function setOperator(op) {
 function eq() {
     let secondOperand = document.getElementById('inputField').value;
     let validatedSecondOperand = validate(secondOperand);
-    if (validatedSecondOperand === false || Array.isArray(validatedSecondOperand)) return;
+    if (validatedSecondOperand === false || Array.isArray(validatedSecondOperand)) {
+        displayAlert('Error: Invalid numbers or numbers out of range for unary or binary operations.');
+        logError('Error: Invalid input provided for binary operation.');
+        return;
+    }
     let result;
     switch (operator) {
         case '+':
@@ -271,7 +282,7 @@ function eq() {
             break;
         default:
             displayAlert('Error: Unknown operator.');
-            logError('Error: Division by zero is not allowed.');
+            logError('Error: Unknown operator.');
             return;
     }
     document.getElementById('inputField').value = result;
@@ -281,74 +292,66 @@ function eq() {
 
 // CSV operations
 function sum() {
-    let values = getCsvValues();
-    if (!values) return;
-    let result = values.reduce((acc, val) => acc + val, 0);
-    document.getElementById('inputField').value = result;
-    fillInfo(result, 'sum');
+    let input = document.getElementById('inputField').value;
+    let values = validate(input, 'sum');    
+    if (values === false) return;    
+    if (Array.isArray(values)) {
+        let result = values.reduce((acc, val) => acc + val, 0);
+        document.getElementById('inputField').value = result;
+        fillInfo(result, 'sum');
+    }
 }
 function sort() {
-    let values = getCsvValues();
-    if (!values) return;
+    let input = document.getElementById('inputField').value;
+    let values = validate(input, 'sort');
+    if (!values || !Array.isArray(values)) return;
     values.sort((a, b) => a - b);
     document.getElementById('inputField').value = values.join(',');
     fillInfo(values.join(','), 'sort'); 
 }
 function reverse() {
-    let values = getCsvValues();
-    if (!values) return;
+    let input = document.getElementById('inputField').value;
+    let values = validate(input, 'reverse');
+    if (!values || !Array.isArray(values)) return;
     values.reverse();
     document.getElementById('inputField').value = values.join(',');
     fillInfo(values.join(','), 'reverse');
 }
 function removeLast() {
-    let values = getCsvValues();
-    if (!values) return;
+    let input = document.getElementById('inputField').value;
+    let values = validate(input, 'removeLast');
+    if (!values || !Array.isArray(values)) return;
     values.pop();
     document.getElementById('inputField').value = values.join(',');
     fillInfo(values.join(','), 'removeLast');
 }
 function calculateAverage() {
-    let values = getCsvValues();
+    let input = document.getElementById('inputField').value;
+    let values = validate(input, 'average');
+    if (!values || !Array.isArray(values)) return;
     let total = values.reduce((acc, val) => acc + val, 0);
     let average = total / values.length;
     document.getElementById('inputField').value = average;
     fillInfo(average, 'average');
 }
 function removeSpecific() {
-    let values = getCsvValues();
+    let input = document.getElementById('inputField').value;
+    let values = validate(input, 'removeSpecific');
     let valueToRemove = document.getElementById('removeValueField').value.trim();
-    if (valueToRemove === "") {
-        displayAlert('Error: You have not provided the element that you want to eliminate.');
-        logError('Error: You have not provided the element that you want to eliminate.');
-        return;
-    }
-    if (values === null || isNaN(valueToRemove) || valueToRemove === "") {
+    if (!values || !Array.isArray(values)) return;
+    if (valueToRemove === "" || isNaN(valueToRemove)) {
+        displayAlert('Error: Please provide a valid number to remove.');
+        logError('Error: Invalid input for value to remove.');
         return;
     }
     let filteredValues = values.filter(val => val != Number(valueToRemove));
     if (filteredValues.length === values.length) {
         displayAlert('Error: Value not found. Please provide a valid value to remove.');
-        logError('Error: Value not found. Please provide a valid value to remove.');
+        logError('Error: Value not found.');
         return;
     }
     document.getElementById('inputField').value = filteredValues.join(',');
     fillInfo(filteredValues.join(','), 'removeSpecific');
-}
-function getCsvValues() {
-    let input = document.getElementById('inputField').value.trim();
-    if (!validate(input)) {
-        displayAlert('Error: Invalid CSV input. Please enter a valid comma-separated list of numbers.');
-        logError('Error: Invalid CSV input. Please enter a valid comma-separated list of numbers.');
-        return null;
-    }
-    let values = input.split(',').map(Number);
-    if (values.some(isNaN)) {
-        displayAlert('Error: CSV contains non-numeric values.');
-        logError('Error: CSV contains non-numeric values.');
-        return null;
-    }
-    return values;
 }
 
 

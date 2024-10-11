@@ -49,7 +49,7 @@ input[type="text"] {
     box-sizing: border-box;
 }
 
-/* Styling for button groups */
+/* Style for button groups */
 .button-group, .csv-button-group {
     display: flex;
     align-items: center;
@@ -82,8 +82,6 @@ button {
     height: 50px;
     transition: background-color 0.3s ease;
 }
-
-/* Specific class for equal button */
 button.equal {
     background-color: lightblue;
     border-radius: 50%;
@@ -93,8 +91,6 @@ button.rectangular {
     width: 120px;
     height: 60px;
 }
-
-/* Hover effect for buttons */
 button:hover {
     background-color: #5a5a5a;
 }
@@ -111,7 +107,7 @@ h3 {
     text-transform: uppercase;
 }
 
-/* Styling for the power/remove input field */
+/* Style for the power/remove input field */
 .small-input {
     width: 60px;
     height: 30px;
@@ -125,7 +121,7 @@ h3 {
     margin-right: 5px;
 }
 
-/* Styling for the alert message */
+/* Style for the alert message */
 .custom-alert {
     position: fixed;
     z-index: 1000;
@@ -141,7 +137,6 @@ h3 {
     align-items: center;
     text-align: center;
 }
-
 .custom-alert button {
     background-color: white;
     color: darkblue;
@@ -154,12 +149,9 @@ h3 {
     justify-content: center;
     align-items: center;
 }
-
 .custom-alert button:hover {
     background-color: lightgray;
 }
-
-
 
 /* Responsiveness */
 @media screen and (max-width: 600px) {
@@ -167,7 +159,6 @@ h3 {
         width: 100%;
         margin: 0 10px;
     }
-
     button {
         padding: 10px 15px;
         font-size: 14px;
@@ -187,11 +178,9 @@ button:active {
     50% { background-color: #5a5a5a; }
     100% { background-color: navy; }
 }
-
 button.loading {
     animation: loading 1s infinite;
 }
-
 button:focus {
     outline: 2px solid navy;
     outline-offset: 2px;
